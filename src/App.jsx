@@ -1,34 +1,42 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { useState } from "react";
 import SearchBar from "./components/SearchBar.jsx";
 import SeriesList from "./components/SeriesList.jsx";
-import Favorites from "./components/Favorites.jsx";
 import ModalDetail from "./components/ModalDetail.jsx";
+import "./App.css";
 
 export default function App() {
+
   const [results, setResults] = useState([]);
+  const [selectedShow, setSelectedShow] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function searchShows(query) {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-
     const res = await fetch(`https://api.tvmaze.com/search/shows?q=${query}`);
     const data = await res.json();
-    console.log("Resultados:", data); // Debe mostrar un array
-    
-    // API devuelve: [{ score, show }]
-    setResults(data.map(item => item.show));
+    setResults(data.map((item) => item.show));
   }
+
+  async function handleSelect(id) {
+    const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
+    const data = await res.json();
+    setSelectedShow(data);
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+    setSelectedShow(null);
+  }
+
+  console.log("selectedShow:", selectedShow);
+  console.log("isModalOpen:", isModalOpen);
 
   return (
     <div>
       <h1>TVMaze Finder</h1>
-
       <SearchBar onSearch={searchShows} />
-
-      <SeriesList results={results} />
+      <SeriesList results={results} onSelect={handleSelect} />
+      <ModalDetail show={selectedShow} isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }

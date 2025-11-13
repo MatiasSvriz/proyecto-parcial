@@ -1,4 +1,4 @@
-export default function SeriesCard({ show }) {
+export default function SeriesCard({ show, onSelect }) {
   const imageSrc = show.image?.medium || "/no-image.png";
 
   return (
@@ -7,6 +7,7 @@ export default function SeriesCard({ show }) {
         src={imageSrc}
         alt={show.name}
         className="series-card-image"
+        onClick={() => onSelect(show.id)}
       />
       <h3 className="series-card-title">{show.name}</h3>
     </div>
