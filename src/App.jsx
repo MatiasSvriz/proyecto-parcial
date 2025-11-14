@@ -2,6 +2,7 @@ import { useState } from "react";
 import SearchBar from "./components/SearchBar.jsx";
 import SeriesList from "./components/SeriesList.jsx";
 import ModalDetail from "./components/ModalDetail.jsx";
+import Favorites from "./components/Favorites.jsx";
 import "./App.css";
 
 export default function App() {
@@ -9,6 +10,8 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
 
   async function searchShows(query) {
     const res = await fetch(`https://api.tvmaze.com/search/shows?q=${query}`);
@@ -28,15 +31,28 @@ export default function App() {
     setSelectedShow(null);
   }
 
-  console.log("selectedShow:", selectedShow);
-  console.log("isModalOpen:", isModalOpen);
+  function toggleFavorite(show){
+
+    const exists = favorites.some((f) => f.id == show.id);
+
+    let updated;
+    if(exists){
+      updated = favorites.filter((f) => f.id != show.id); //quitar de favorites
+    } else {
+      updated = [ ...favorites, show ]; // añadir a favorites
+    }
+
+    setFavorites(updated);
+
+  }
 
   return (
     <div>
       <h1>TVMaze Finder</h1>
       <SearchBar onSearch={searchShows} />
-      <SeriesList results={results} onSelect={handleSelect} />
+      <SeriesList results={results} onSelect={handleSelect} onToggleFavorite={toggleFavorite} favorites={favorites}/>
       <ModalDetail show={selectedShow} isOpen={isModalOpen} onClose={closeModal} />
+      <Favorites favorites={favorites} onSelect={handleSelect} onToggleFavorite={toggleFavorite}/>
     </div>
   );
 }
