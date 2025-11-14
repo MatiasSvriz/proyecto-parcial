@@ -13,6 +13,7 @@ export default function SearchBar({ onSearch }) {
   return (
     <form onSubmit={handleSubmit}>
       <input
+        id="searchInput"
         type="text"
         placeholder="Buscar serie..."
         value={input}
