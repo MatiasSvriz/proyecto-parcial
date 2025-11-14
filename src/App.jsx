@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar.jsx";
 import SeriesList from "./components/SeriesList.jsx";
 import ModalDetail from "./components/ModalDetail.jsx";
@@ -10,7 +10,9 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || []
+  );
 
 
   async function searchShows(query) {
@@ -45,6 +47,8 @@ export default function App() {
     setFavorites(updated);
 
   }
+
+  useEffect(() => {localStorage.setItem("favorites", JSON.stringify(favorites))}, [favorites]);
 
   return (
     <div>
