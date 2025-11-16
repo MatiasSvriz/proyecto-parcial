@@ -51,12 +51,18 @@ export default function App() {
   useEffect(() => {localStorage.setItem("favorites", JSON.stringify(favorites))}, [favorites]);
 
   return (
-    <div>
-      <h1>TVMaze Finder</h1>
-      <SearchBar onSearch={searchShows} />
-      <SeriesList results={results} onSelect={handleSelect} onToggleFavorite={toggleFavorite} favorites={favorites}/>
-      <ModalDetail show={selectedShow} isOpen={isModalOpen} onClose={closeModal} />
-      <Favorites favorites={favorites} onSelect={handleSelect} onToggleFavorite={toggleFavorite}/>
+    <div className="app-container">
+      <h1 className="main-title">TVMaze Finder</h1>
+          <SearchBar onSearch={searchShows} />
+        <section className="section-container">
+          <h2>Resultados</h2>
+          <SeriesList results={results} onSelect={handleSelect} onToggleFavorite={toggleFavorite} favorites={favorites}/>
+        </section>
+          <ModalDetail show={selectedShow} isOpen={isModalOpen} onClose={closeModal} />
+        <section className="section-container">
+          <h2>Favoritos</h2>
+          <Favorites favorites={favorites} onSelect={handleSelect} onToggleFavorite={toggleFavorite}/>
+        </section>
     </div>
   );
 }

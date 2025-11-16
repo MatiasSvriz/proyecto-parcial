@@ -2,7 +2,7 @@ import SeriesCard from "./SeriesCard.jsx";
 
 export default function SeriesList({ results, onSelect, onToggleFavorite, favorites }) {
   if (!results || results.length === 0) {
-    return <p>No hay resultados.</p>;
+    return <p className="series-answer"> No hay resultados.</p>;
   }
 
   return (
